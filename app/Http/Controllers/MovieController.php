@@ -73,6 +73,10 @@ class MovieController extends Controller
 
         $movie = Movie::find($id);
         
+        if($movie == null) {
+            return response()->json(['message' => 'Movie not found'], 404);
+        }
+        
         if($request->hasFile('image')) {
             Storage::disk('public')->delete($movie->image);
             $path = Storage::disk('public')->put('images', $request->file('image'));

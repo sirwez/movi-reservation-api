@@ -17,4 +17,13 @@ class Seat extends Model
     {
         return $this->belongsTo(ShowTime::class);
     }
+
+    /**
+     * Relacionamento com Reservation
+     * Um assento pode ter uma reserva
+     */
+    public function reservation()
+    {
+        return $this->hasOne(Reservation::class);
+    }
 }

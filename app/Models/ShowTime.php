@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Observers\ShowTimeObserver;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
+
+#[ObservedBy([ShowTimeObserver::class])]
 class ShowTime extends Model
 {
-    // Campos que podem ser preenchidos em massa
+
     protected $fillable = ['show_time', 'room', 'date', 'price', 'total_seats', 'movie_id'];
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ShowTimeController;
 use App\Http\Controllers\TesteController;
 use Illuminate\Http\Request;
@@ -31,4 +32,10 @@ Route::group(['prefix' => 'movies'], function () {
 
 Route::group(['prefix' => 'showtimes'], function () {
     Route::get('/', [ShowTimeController::class, 'index']);
+    Route::post('/create', [ShowTimeController::class, 'create']);
+    Route::post('/update/{id}', [ShowTimeController::class, 'update']);
+});
+
+Route::group(['prefix' => 'reservation'], function () {
+    Route::post('/create', [ReservationController::class, 'create']);
 });
