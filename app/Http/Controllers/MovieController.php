@@ -35,12 +35,12 @@ class MovieController extends Controller
     }
 
     public function list() {
-        $movies = Movie::all();
+        $movies = Movie::with('showTimes')->all();
         return response()->json($movies, 200);
     }
 
     public function showById($id) {
-        $movie = Movie::find($id);
+        $movie = Movie::with('showTimes')->find($id);
         if($movie == null) {
             return response()->json(['message' => 'Movie not found'], 404);
         }
@@ -48,7 +48,7 @@ class MovieController extends Controller
     }
 
     public function showByName(Request $request) {
-        $movie = Movie::where('title', 'like', '%' . $request->title . '%')->get();
+        $movie = Movie::with('showTimes')->where('title', 'like', '%' . $request->title . '%')->get();
         if($movie == null) {
             return response()->json(['message' => 'Movie not found'], 404);
         }
@@ -56,12 +56,20 @@ class MovieController extends Controller
     }
 
     public function showByGenre(Request $request) {
-        $movie = Movie::where('genre', 'like', '%' . $request->genre . '%')->get();
+        $movie = Movie::with('showTimes')->where('genre', 'like', '%' . $request->genre . '%')->get();
         if($movie == null) {
             return response()->json(['message' => 'Movie not found'], 404);
         }
         return response()->json($movie, 200);
     }
+
+    public function showByDate(Request $request) {
+        $movies = Movie::with('showTimes')->whereHas('showTimes', function ($query) use ($request) {
+            $query->whereDate('date', $request->date);
+        })->get();
+        return response()->json($movies, 200);
+    }
+
     public function update(Request $request, $id) {
         $request->validate([
             'title' => 'required',
@@ -72,7 +80,7 @@ class MovieController extends Controller
         ]);
 
         $movie = Movie::find($id);
-        
+
         if($movie == null) {
             return response()->json(['message' => 'Movie not found'], 404);
         }

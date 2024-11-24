@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
 use App\Models\Seat;
 use App\Models\ShowTime;
 use App\Services\SeatService;
@@ -75,4 +76,14 @@ class ShowTimeController extends Controller
 
         return response()->json($showTime, 200);
     }
+
+    public function seats($id) {
+        $showTime = ShowTime::find($id);
+        if ($showTime == null) {
+            return response()->json(['message' => 'ShowTime not found'], 404);
+        }
+        $seats = Seat::where('show_time_id', $showTime->id)->get();
+        return response()->json($seats, 200);
+    }
+
 }

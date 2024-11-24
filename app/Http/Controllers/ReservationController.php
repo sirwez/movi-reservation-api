@@ -48,4 +48,22 @@ class ReservationController extends Controller
 
         return response()->json($reservation, 201);
     }
+
+    public function list() {
+        $reservation = Reservation::with('seat', 'seat.showTime')->where('user_id', 1)->get();
+        return response()->json($reservation, 200);
+    }
+
+    public function cancel($id) {
+        $reservation = Reservation::find($id);
+        if ($reservation == null) {
+            return response()->json(['message' => 'Reservation not found'], 404);
+        }
+        $reservation->status = 'cancelled';
+        $reservation->save();
+        $seat = $reservation->seat;
+        $seat->available = true;
+        $seat->save();
+        return response()->json(['message' => 'Reservation canceled successfully'], 200);
+    }
 }
