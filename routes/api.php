@@ -5,11 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\ShowTimeController;
-use App\Http\Controllers\TesteController;
-use App\Http\Middleware\CheckRoleMiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use PHPUnit\Framework\Attributes\Group;
+
 
 // Autenticação
 
