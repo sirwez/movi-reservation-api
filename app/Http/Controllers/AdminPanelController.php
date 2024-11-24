@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use App\Models\Reservation;
 use App\Models\ShowTime;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Commands\Show;
 
@@ -53,5 +54,11 @@ class AdminPanelController extends Controller
             $query->where('title', 'like', '%' . $request->title . '%');
         })->where('status', 'confirmed')->get();
         return response()->json($reservations, 200);
+    }
+
+    public function givePermission(Request $request) {
+        $user = User::find($request->id);
+        $user->assignRole('admin');
+        return response()->json(['message' => 'Permission granted'], 200);
     }
 }
